@@ -1,0 +1,197 @@
+\documentclass{beamer}
+
+% opacity bugfix: see http://tug.org/pipermail/pdftex/2007-December/007480.html
+\pdfpageattr {/Group << /S /Transparency /I true /CS /DeviceRGB>>}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usetikzlibrary{%
+   arrows,%
+   calc,%
+   fit,%
+   patterns,%
+   plotmarks,%
+   shapes.geometric,%
+   shapes.misc,%
+   shapes.symbols,%
+   shapes.arrows,%
+   shapes.callouts,%
+   shapes.multipart,%
+   shapes.gates.logic.US,%
+   shapes.gates.logic.IEC,%
+   er,%
+   automata,%
+   backgrounds,%
+   chains,%
+   topaths,%
+   trees,%
+   petri,%
+   mindmap,%
+   matrix,%
+   calendar,%
+   folding,%
+   fadings,%
+   through,%
+   patterns,%
+   positioning,%
+   scopes,%
+   decorations.fractals,%
+   decorations.shapes,%
+   decorations.text,%
+   decorations.pathmorphing,%
+   decorations.pathreplacing,%
+   decorations.footprints,%
+   decorations.markings,%
+   shadows}
+\usepackage{amssymb, amsmath, amsfonts, enumerate}
+%\usepackage{bbold}
+\newcommand\hmmax{0}
+\usepackage{bm}
+%\usepackage{dsfont}
+\usepackage{pxfonts}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{url}
+
+\usepackage{hyperref}
+
+\usetheme{Boadilla}
+\usecolortheme{default}
+%\usecolortheme{crane}
+
+%\usetheme[secheader]{Boadilla}
+\setbeamercovered{transparent}
+\setbeamercovered{invisible}
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{bibliography item}[text] % numbered references
+\useoutertheme{infolines}
+%\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{\hspace*{5mm}\hfill\insertframenumber\hspace*{5mm}\vspace{3mm}}
+\setbeamercolor{alerted text}{fg=orange!80!black}
+
+\def\then{{\structure{$\rule[0.35ex]{2ex}{0.5ex}\!\!\!\blacktriangleright$}}}
+\def\play{{\structure{$\blacktriangleright$}}}
+
+\def\VaR{\text{VaR}}
+
+\title{Markt(preis)risiko}
+\author{Gero Walter\\ \url{http://www.geeeero.de}}
+\institute{Vortrag bei der Informationsfabrik GmbH}
+\date{6.~April 2017}
+
+\begin{document}
+
+\frame{
+\titlepage
+}
+
+\begin{frame}{Markt(preis)risiko / market risk}
+\begin{tikzpicture}[pfeil/.style={-latex', line width=1mm, color=orange!80!black, shorten <=1mm}]
+\uncover<1>{%
+\node at (0,0) {\parbox{\textwidth}{%
+\begin{quote}
+das Risiko, Verluste in Risikopositionen zu erleiden,\\
+die durch Marktpreisbewegungen verursacht werden
+\end{quote}
+% the risk of losses in on- and off-balance sheet positions arising from movements in market prices. 
+{\scriptsize\hfill Glossar der Bank für Internationalen Zahlungsausgleich, eigene Übersetzung}
+}};}
+\uncover<2>{%
+\node (risikopos) at (1,2.5) {\parbox{0.6\textwidth}{\raggedleft\small was die Bank in ihren Büchern\\ (Handelsbuch, Anlagebuch) hat}};
+\draw[pfeil] (risikopos) -- (0.4,0.85);
+\node at (0,0) {\parbox{\textwidth}{%
+\begin{quote}
+das Risiko, Verluste in \alert{Risikopositionen} zu erleiden,\\
+die durch Marktpreisbewegungen verursacht werden
+\end{quote}
+% the risk of losses in on- and off-balance sheet positions arising from movements in market prices. 
+{\scriptsize\hfill Glossar der Bank für Internationalen Zahlungsausgleich, eigene Übersetzung}
+}};}
+\uncover<3>{%
+\node (risikopos) at (1,2.5) {\parbox{0.6\textwidth}{\raggedleft\small was die Bank in ihren Büchern\\ (Handelsbuch, Anlagebuch) hat}};
+\draw[pfeil] (risikopos) -- (0.4,0.85);
+\node (marktpr) at (-2,-2) {\parbox{0.5\textwidth}{\small die Werte dieser Positionen\\ auf dem Markt ändern sich}};
+\draw[pfeil] (marktpr) -- (-1.75,-0.25);
+\node at (0,0) {\parbox{\textwidth}{%
+\begin{quote}
+das Risiko, Verluste in \alert{Risikopositionen} zu erleiden,\\
+die durch \alert{Marktpreisbewegungen} verursacht werden
+\end{quote}
+% the risk of losses in on- and off-balance sheet positions arising from movements in market prices. 
+{\scriptsize\hfill Glossar der Bank für Internationalen Zahlungsausgleich, eigene Übersetzung}
+}};}
+\end{tikzpicture}
+%Risikopositionen: was die Bank in ihren Büchern (Handelsbuch, Anlagebuch) hat\\
+%sMarktpreisbewegungen: die Werte dieser Positionen auf dem Markt ändern sich
+\end{frame}
+
+\begin{frame}{Risikoarten (nach MaRisk)}
+\begin{tikzpicture}
+[mybox/.style={rectangle,rounded corners,draw,fill=black!10,thick,inner sep=2pt,minimum size=6mm}, %font=\footnotesize},
+ hv path/.style={thick, to path={-| (\tikztotarget)}},
+ vh path/.style={thick, to path={|- (\tikztotarget)}}]
+\node[mybox] (ges) at ( 0  , 0  ) {Gesamtrisiko};
+\node[mybox] (mar) at (-4.5,-2  ) {Marktpreisrisiko};
+\node[mybox] (cre) at (-1.5,-2  ) {Kreditrisiko};
+\node[mybox] (liq) at ( 1.5,-2  ) {Liquiditätsr.};
+\node[mybox] (ope) at ( 4.5,-2  ) {Operationelles R.};
+\coordinate (uge) at (0,-1);
+\path (ges) edge[thick] (uge)
+      (uge) edge[hv path] (mar)
+            edge[hv path] (cre)
+            edge[hv path] (liq)
+            edge[hv path] (ope);
+\uncover<2->{%
+\node (sub) at (-2,-4) {\parbox{0.3\textwidth}{Kursrisiko\\ Zinsänderungsrisiko\\ Währungsrisiko\\ Warenrisiko\\ \ldots}};
+\path (mar) edge[vh path] (-3.9,-3.05)
+            edge[vh path] (-3.9,-3.55)
+            edge[vh path] (-3.9,-4.05)
+            edge[vh path] (-3.9,-4.55)
+            edge[vh path] (-3.9,-5.05);
+}
+\end{tikzpicture}
+\end{frame}
+
+%\begin{frame}{Systematisches vs.\ unsystematisches Risiko}
+%\end{frame}
+
+\begin{frame}{Messung des Marktpreisrisikos: \emph{Value at Risk} ($\VaR$)}
+
+VaR wird genutzt zum (Banken-) internen Risikomanagement und zur Berechung von geforderten Eigenkapitalquoten\\ %von der Bankenaufsicht
+
+$\VaR_{1-\alpha\%}(X)$: Wertverlust von $X$ über bestimmten Zeitraum ist in $\alpha\%$ der Fälle höchstens $\VaR_{1-\alpha\%}(X)$\\
+
+$\VaR_{99\%}(X)$ = 99\%-Quantil der Verteilung des Verlusts (neg.\ Gewinn)\\
+
+\play\ Brauche die Verteilung der Rendite! 
+\end{frame}
+
+\begin{frame}{Klassische Berechnungsmethoden}
+\begin{itemize}
+\item Varianz-Kovarianz-Methode (Delta-Normal-Ansatz): schätze sd aus Daten, NV-Annahme ergibt Quantil
+\item Historische Simulation: Bestimme empirisches Quantil aus historischen Daten
+\item Monte-Carlo-Simulation: Simuliere Renditen gemäß Verteilungsmodell, empirisches Quantil
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Fortgeschrittene Berechnungsmethoden}
+\begin{itemize}
+\item Filtered historic simulation
+\item Vollparametrische Methoden
+\item Extremwerttheorie-basierte Ansätze
+\item Quantilsregression
+\end{itemize}
+\end{frame}
+
+\begin{frame}{VaR ist kein kohärentes Risikomaß}
+
+\end{frame}
+
+\begin{frame}{}
+
+\end{frame}
+
+\end{document}
