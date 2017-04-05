@@ -77,7 +77,7 @@
 
 \def\VaR{\text{VaR}}
 
-\title{Markt(preis)risiko}
+\title{Marktpreisrisiko}
 \author{Gero Walter\\ \url{http://www.geeeero.de}}
 \institute{Vortrag bei der Informationsfabrik GmbH}
 \date{6.~April 2017}
@@ -160,21 +160,60 @@ die durch \alert{Marktpreisbewegungen} verursacht werden
 
 \begin{frame}{Messung des Marktpreisrisikos: \emph{Value at Risk} ($\VaR$)}
 
-VaR wird genutzt zum (Banken-) internen Risikomanagement und zur Berechung von geforderten Eigenkapitalquoten\\ %von der Bankenaufsicht
+10-Tages-$\VaR_{5\%}(X) = 1.9$:\\[1.5ex]
+\parbox{\textwidth}{\raggedleft %
+Die Wahrscheinlichkeit, dass der Verlust durch Position $X$\\ nach 10 Tagen größer als 1.9 ist, beträgt 5\%}
+%$\VaR_{1-\alpha\%}(X)$: Wertverlust von $X$ über bestimmten Zeitraum ist in $\alpha\%$ der Fälle höchstens $\VaR_{1-\alpha\%}(X)$\\
+%\centering
+\begin{tikzpicture}[pfeil/.style={-latex', line width=1mm, color=orange!80!black, shorten <=1mm}]
+\uncover<2>{%
+\node at (0,0) {\includegraphics[height=0.65\textheight]{vardens1.pdf}};}
+\uncover<3->{%
+\node at (0,0) {\includegraphics[height=0.65\textheight]{vardens2.pdf}};
+\node (fpr) at (-3, 0) {$5\%$};
+\path (fpr) edge[pfeil] (-2,-1);}
+\uncover<4->{%
+\draw[line width=1mm] (-1.1,-1.5) -- node[above] {$\VaR_{5\%}$} (0.65,-1.5);}
+\end{tikzpicture}
+\end{frame}
 
-$\VaR_{1-\alpha\%}(X)$: Wertverlust von $X$ über bestimmten Zeitraum ist in $\alpha\%$ der Fälle höchstens $\VaR_{1-\alpha\%}(X)$\\
-
-$\VaR_{99\%}(X)$ = 99\%-Quantil der Verteilung des Verlusts (neg.\ Gewinn)\\
-
-\play\ Brauche die Verteilung der Rendite! 
+\begin{frame}{Messung des Marktpreisrisikos: \emph{Value at Risk} ($\VaR$)}
+VaR wird genutzt\ldots
+\begin{itemize}
+\item im Banken-internen Risikomanagement
+\item zur Berechung von geforderten Eigenkapitalquoten %von der Bankenaufsicht
+\end{itemize}
+\pause
+\bigskip
+$(-1) \times \VaR_{\alpha\%}(X) = \alpha\%$-Quantil der Verteilung der Renditen\\[2ex]
+\pause
+Zur Berechnung benötigt:
+\begin{itemize}
+\item Annahmen zur Renditenverteilung
+\item Approximation der Renditenverteilung
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Klassische Berechnungsmethoden}
-\begin{itemize}
-\item Varianz-Kovarianz-Methode (Delta-Normal-Ansatz): schätze sd aus Daten, NV-Annahme ergibt Quantil
-\item Historische Simulation: Bestimme empirisches Quantil aus historischen Daten
-\item Monte-Carlo-Simulation: Simuliere Renditen gemäß Verteilungsmodell, empirisches Quantil
-\end{itemize}
+\begin{enumerate}
+\item<1-> Varianz-Kovarianz-Methode (Delta-Normal-Ansatz):
+ \begin{itemize}
+ \item<1-> Schätze Mittelwert und Standardabweichung (Volatilität) aus Daten
+ \item<1-> Normalverteilungs-Annahme ergibt Quantil
+ \item[\alert{!!!}]<2-> iid- und Normalverteilungsannahme meist unrealistisch \\[2ex]
+ \end{itemize}
+\item<3-> Historische Simulation:
+ \begin{itemize}
+ \item<3-> Bestimme direkt empirisches Quantil aus Daten
+ \item[\alert{!!!}]<4-> hängt bei kleinen Quantilen von wenigen Beobachtungen ab \\[2ex] 
+ \end{itemize}
+\item<5-> Monte-Carlo-Simulation:
+ \begin{itemize}
+ \item<5-> Simuliere Renditen gemäß Verteilungsmodell
+ \item<5-> Bestimme empirisches Quantil aus simulierten Daten
+ \item[\alert{!!!}]<6-> rechenintensiv
+ \end{itemize}
+\end{enumerate}
 \end{frame}
 
 \begin{frame}{Fortgeschrittene Berechnungsmethoden}
@@ -182,16 +221,17 @@ $\VaR_{99\%}(X)$ = 99\%-Quantil der Verteilung des Verlusts (neg.\ Gewinn)\\
 \item Filtered historic simulation
 \item Vollparametrische Methoden
 \item Extremwerttheorie-basierte Ansätze
-\item Quantilsregression
+\item Quantilregression
 \end{itemize}
 \end{frame}
 
-\begin{frame}{VaR ist kein kohärentes Risikomaß}
-
-\end{frame}
-
-\begin{frame}{}
-
+\begin{frame}{Kritik am VaR}
+\begin{itemize}[<+->]
+\item VaR ist kein kohärentes Risikomaß (nicht sub-additiv)
+\item VaR ignoriert alles, was jenseits des $\alpha\%$-Quantils passiert\\
+{\small\hfill (Komplement: Expected Shortfall)}
+\item Wie jede einzelne Maßzahl kann VaR Komplexität überdecken und den Blick verengen  
+\end{itemize}
 \end{frame}
 
 \end{document}
